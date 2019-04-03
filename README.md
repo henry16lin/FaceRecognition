@@ -5,8 +5,6 @@ openCV + classifier for 2-stage object detection
 
 openCV 4.0.0
 
-if run classifier with NN:
-
 Tensorflow 1.12.0
 
 Keras 2.2.4
