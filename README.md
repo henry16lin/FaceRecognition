@@ -3,11 +3,11 @@ openCV + classifier for 2-stage object detection
 
 #package:
 
-openCV 4.0.0
+cv2 4.0.0
 
-Tensorflow 1.12.0
+tensorflow 1.12.0
 
-Keras 2.2.4
+keras 2.2.4
 
 # Quick Start:
 1.open command window and cd to your path 
