@@ -60,10 +60,14 @@ def recognize_img(cascName,classifier,model_name):
             (x,y,w,h) = face
             
             if classifier:
+                input_shape = model.layers[0].input_shape
+                t = [1]
+                t.extend(list(input_shape[1:]))
+                input_shape_tuple = tuple(t)
                 single_face = image_resize[ y:(y+int(np.around(w*1.214))), x:(x+w),:]
-                single_face_resize = misc.imresize(single_face,[85,70,3])
+                single_face_resize = misc.imresize(single_face,list(input_shape[1:]))
                 
-                x_test4D = single_face_resize.reshape(1,85,70,3).astype('float32')
+                x_test4D = single_face_resize.reshape(input_shape_tuple).astype('float32')
                 x_test_normalize = x_test4D / 255
                 
                 class_prob = model.predict(x_test_normalize)[0]
