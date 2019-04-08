@@ -1,5 +1,5 @@
-# FaceRecognition (cv2 Recognition)  
-openCV + classifier for 2-stage object detection
+# FaceRecognition  
+cv2(haarcascade) + classifier for 2-stage object detection
  
 cv2 4.0.0  
 tensorflow 1.12.0  
