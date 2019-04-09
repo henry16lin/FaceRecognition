@@ -33,10 +33,10 @@ classifier example: *`python face_recognize.py --haarcascade haarcascade_frontal
 
 
 # training:
-You can use `train.py` to train your own model with structure in `model_structure.py` from random initial  
+You can use `train.py` to train your own model with structure in `model_structure.py` from random initial weight  
 or use `train_by_transfer_learning.py` to do transfer learning from VGG16 which trained weight from imagenet.  
   
-Put your training date in training data folder and different class in different folder  
+Put your training data in folder `training data` and each class correspond to each sub-folder  
 than modify `classes.txt` to your class name which split by ','
 
 
