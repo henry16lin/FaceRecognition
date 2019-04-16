@@ -44,13 +44,7 @@ def recognize_img(cascName,classifier,model_name):
         
         
         if classifier:
-            #from keras.models import load_model
-            #from keras import backend as K
-            #load classifier model
             try:
-                #model_path_str = 'checkpoint/'+ model_name
-                #model = load_model(model_path_str)
-                
                 model_json_path_str = 'checkpoint/'+ model_name + '.json'
                 model_weight_path_str = 'checkpoint/'+ model_name + '.h5'
                 
