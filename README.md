@@ -7,7 +7,7 @@ keras 2.2.4
 
 ## Quick Start:  
 1. open command window and cd to your path  
-2. *`python face_recognize.py`*  
+2. *`python recognize.py`*  
 3. input the image path:  
     ex: *C:\pythonworks\FaceRecognition\people.jpg*
 
@@ -29,7 +29,7 @@ optional arguments:
 --model: model name in /checkpoint(keras model. if want to change to other type of model, some change is needed in face_recognize.py)  
 ```  
 
-classifier example: *`python face_recognize.py --haarcascade haarcascade_frontalcatface.xml --classifer --model your_model_name`*   
+classifier example: *`python recognize.py --haarcascade haarcascade_frontalcatface.xml --classifer --model your_model_name`*   
 
 
 # training:
