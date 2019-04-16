@@ -1,4 +1,4 @@
-# FaceRecognition  
+# Object Recognition  
 cv2(haarcascade) + classifier for 2-stage object detection
  
 cv2 4.0.0  
@@ -29,7 +29,7 @@ optional arguments:
 --model: model name in /checkpoint(keras model. if want to change to other type of model, some change is needed in face_recognize.py)  
 ```  
 
-classifier example: *`python face_recognize.py --haarcascade haarcascade_frontalcatface.xml --classifer --model your_model_name.h5`*   
+classifier example: *`python face_recognize.py --haarcascade haarcascade_frontalcatface.xml --classifer --model your_model_name`*   
 
 
 # training:
