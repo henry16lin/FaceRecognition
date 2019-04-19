@@ -8,13 +8,11 @@ from keras.models import model_from_json
 
 
 def recognize_img(cascName,classifier,model_name):
-    a=0
+    
     while True: ###local command mode
-        a +=1
         imagePath = input('please input image path: ') #local command mode
         c = open('classes.txt','r')
         classes = c.read().split(',')
-        #cascPath = "haarcascade_frontalface_default.xml"
     
         # Create the haar cascade
         cascPath = os.path.join(os.getcwd(),'haarcascade',cascName)
@@ -22,10 +20,11 @@ def recognize_img(cascName,classifier,model_name):
     
         # Read the image
         image = cv2.imread(imagePath)
-        if image.size>3*10**7:
-            image_resize = misc.imresize(image,0.33)  ## resize img to 1/3 original size
-        else:
-            image_resize = image
+        
+        while image.size>3*10**7:
+            image = misc.imresize(image,0.2)
+        image_resize = image
+        
         gray = cv2.cvtColor(image_resize, cv2.COLOR_BGR2GRAY)
         
         try:
@@ -34,7 +33,6 @@ def recognize_img(cascName,classifier,model_name):
                 gray, 
                 scaleFactor=1.1, minNeighbors=5, minSize=(30, 30)
                 #flags = cv2.CV_HAAR_SCALE_IMAGE
-            	 #flags = cv2.CASCADE_SCALE_IMAGE
             )
             
             print("Found {0} objects!".format(len(faces)))
