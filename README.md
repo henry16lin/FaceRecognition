@@ -34,7 +34,7 @@ classifier example: *`python recognize.py --haarcascade haarcascade_frontalcatfa
 
 # training:
 You can use `train.py` to train your own model with structure in `model_structure.py` from random initial weight  
-or use `train_by_transfer_learning.py` to do transfer learning from VGG16 which trained weight from imagenet.  
+or use `train_by_transfer_learning.py` to do transfer learning from pre-trained model in keras.  
   
 Put your training data in folder `training data` and each class correspond to each sub-folder  
 than modify `classes.txt` to your class name which split by ','
