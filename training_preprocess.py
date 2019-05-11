@@ -44,36 +44,32 @@ def data_preprocess(img_size):
         current_img = []
         for j in range(len(current_data_list)):
             tmp1 = misc.imread(os.path.join(current_class_path , current_data_list[j]))
-            
+            tmp1 = misc.imresize(tmp1,img_size)
             if augment: ## data augment: flip & add noise
                 tmp2 = horizontal_flip(tmp1)
                 tmp3 = random_noise(tmp1)
                 tmp4 = random_noise(tmp2)
-                
-                # resize
-                tmp1 = misc.imresize(tmp1,img_size)
-                tmp2 = misc.imresize(tmp2,img_size)
-                tmp3 = misc.imresize(tmp3,img_size)
-                tmp4 = misc.imresize(tmp4,img_size)
-                #plt.imshow(tmp4)
                 
                 current_img.append(tmp1)
                 current_img.append(tmp2)
                 current_img.append(tmp3)
                 current_img.append(tmp4)
             else:
-                tmp1 = misc.imresize(tmp1,img_size)
                 current_img.append(tmp1)
             
             current_cat = np.repeat(i,len(current_img))
-        
+            
         if i ==0:
             img = current_img
             cat = current_cat
         else:
             img = np.concatenate((img,current_img), axis=0).astype('float32') 
             cat = np.concatenate((cat,current_cat), axis=0).astype('float32') 
-        
+    
+    ind = np.arange(img.shape[0])
+    np.random.shuffle(ind)
+    img = img[ind]
+    cat= cat[ind]
     # normalize & transform to 4D array
     #x_train4D = img.reshape(img.shape[0],img_size).astype('float32')
     x_train_normalize = img / 255
