@@ -15,7 +15,6 @@ img_size = [85,70,3]
 epochs = 50
 batch_size = 9
 optimizer = 'adam'
-num_classes = 3
 
 cwd = os.getcwd()
 
@@ -34,11 +33,12 @@ def show_train_history(train_history,train,validation):
 def training():
     
     # load & pre-process data
+    classes = training_preprocess.get_classes()
     x_train_normalize,y_train_one_hot = training_preprocess.data_preprocess(img_size)
     
     # model build
     input_shape = tuple(img_size)
-    model = model_structure.model_body(input_shape,num_classes=num_classes)
+    model = model_structure.model_body(input_shape,num_classes=len(classes))
     
     print(model.summary())
     
