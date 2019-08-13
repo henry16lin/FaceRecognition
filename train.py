@@ -15,6 +15,7 @@ img_size = [85,70,3]
 epochs = 50
 batch_size = 9
 optimizer = 'adam'
+num_classes = 3
 
 cwd = os.getcwd()
 
@@ -37,7 +38,7 @@ def training():
     
     # model build
     input_shape = tuple(img_size)
-    model = model_structure.model_body(input_shape,num_classes=3)
+    model = model_structure.model_body(input_shape,num_classes=num_classes)
     
     print(model.summary())
     
@@ -45,9 +46,12 @@ def training():
     model.compile(loss='categorical_crossentropy',optimizer=optimizer,metrics=['accuracy'])
     
     # checkpoint
-    filepath= os.path.join(cwd,'checkpoint','best_epoches_model.h5')
-    checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
-    callbacks_list = [checkpoint]
+    #filepath= os.path.join(cwd,'checkpoint','best_epoches_model.h5')
+    filepath= os.path.join(cwd,'checkpoint','ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5')
+    logging = TensorBoard(log_dir=os.path.join(cwd,'checkpoint'))
+    checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1,save_weights_only=True, save_best_only=True, mode='min')
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
+    callbacks_list = [checkpoint,logging,reduce_lr]
     
     # Fit the model
     train_history = model.fit(x=x_train_normalize,
