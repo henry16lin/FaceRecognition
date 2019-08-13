@@ -5,7 +5,7 @@ import os
 
 from keras.layers import Dense,LeakyReLU,GlobalAveragePooling2D
 from keras.layers.normalization import BatchNormalization
-from keras.applications import MobileNet
+from keras.applications.resnet import ResNet50
 from keras.callbacks import ModelCheckpoint,TensorBoard,ReduceLROnPlateau
 from keras.models import Sequential
 
@@ -13,7 +13,7 @@ import training_preprocess
 
 
 #customized setting
-img_size = [128,128,3]
+img_size = [128,128,3]  #some pre-trained model can't accept dynamic input size
 fine_tune_all_layer = True   #train last classified layer first than fine tune all layers
 epochs=50
 batch_size = 9
@@ -41,7 +41,7 @@ def training():
     
     # model build
     input_shape = tuple(img_size)
-    net = MobileNet(include_top=False, weights='imagenet', input_shape=input_shape)
+    net = ResNet50(include_top=False, weights='imagenet', input_shape=input_shape)
     
     for layer in net.layers[:-12]: #set last dep+point wise conv to trainable 
         layer.trainable = False
@@ -66,14 +66,14 @@ def training():
     logging = TensorBoard(log_dir=os.path.join(cwd,'checkpoint'))
     filepath= os.path.join(cwd,'checkpoint','ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5')
     checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1,save_weights_only=True, save_best_only=True, mode='min')
-    #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
     
     # Fit the model
     train_history = model.fit(x=x_train_normalize, y=y_train_one_hot,
               validation_split=0.1,
               epochs=epochs,
               batch_size=batch_size,
-              callbacks=[checkpoint,logging], verbose=1)
+              callbacks=[checkpoint,logging,reduce_lr], verbose=1)
     
     # save model structure
     with open(os.path.join(cwd,'checkpoint',"mobilenet.json"), "w") as json_file:
