@@ -7,13 +7,13 @@ from keras.layers import Dense,LeakyReLU,GlobalAveragePooling2D
 from keras.layers.normalization import BatchNormalization
 from keras.applications.resnet import ResNet50
 from keras.callbacks import ModelCheckpoint,TensorBoard,ReduceLROnPlateau
-from keras.models import Sequential
+from keras.models import Sequential,Model
 
 import training_preprocess
 
 
 #customized setting
-img_size = [128,128,3]  #some pre-trained model can't accept dynamic input size
+img_size = [224,224,3]  #some pre-trained model can't accept dynamic input size
 fine_tune_all_layer = True   #train last classified layer first than fine tune all layers
 epochs=50
 batch_size = 9
@@ -42,19 +42,33 @@ def training():
     # model build
     input_shape = tuple(img_size)
     net = ResNet50(include_top=False, weights='imagenet', input_shape=input_shape)
-    
-    for layer in net.layers[:-12]: #set last dep+point wise conv to trainable 
+
+
+    for layer in net.layers: #freeze pre-train weight
         layer.trainable = False
+
+
+    x = net.output
+    x = GlobalAveragePooling2D()(x)
+    x = Dense(512)(x)
+    x = BatchNormalization()(x)
+    x = LeakyReLU(alpha=0.1)(x)
+    output = Dense(len(classes),activation='softmax')(x)
+
+    model = Model(net.input,output)
+
     
+    ''' #by sequential model
     model = Sequential()
     for layer in net.layers:
         model.add(layer)
-    
+
     model.add(GlobalAveragePooling2D())
     model.add(Dense(1024))
     model.add(BatchNormalization())
-    model.add(LeakyReLU(alpha=0.1))    
+    model.add(LeakyReLU(alpha=0.1))
     model.add(Dense(len(classes),activation='softmax'))
+    '''
     
     print(model.summary())
     
