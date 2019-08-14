@@ -18,7 +18,7 @@ fine_tune_all_layer = True   #train last classified layer first than fine tune a
 epochs=50
 batch_size = 9
 
-
+plt.switch_backend('agg')
 cwd = os.getcwd()
 
 
@@ -97,7 +97,6 @@ def training():
     
         
     show_train_history(train_history,'acc','val_acc')
-    show_train_history(train_history,'loss','val_loss')
     
     
     ### evaluate the last model
