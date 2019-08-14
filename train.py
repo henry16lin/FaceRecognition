@@ -9,6 +9,7 @@ from keras.models import load_model
 import model_structure
 import training_preprocess
 
+plt.switch_backend('agg')
 
 #customized setting
 img_size = [85,70,3]
@@ -68,7 +69,6 @@ def training():
     
     
     show_train_history(train_history,'acc','val_acc')
-    show_train_history(train_history,'loss','val_loss')
     
     
     ### evaluate the last model
