@@ -22,14 +22,14 @@ plt.switch_backend('agg')
 cwd = os.getcwd()
 
 
-def show_train_history(train_history,train,validation):
+def show_train_history(train_history,train,validation,file_name):
     fig = plt.figure()
     plt.plot(train_history.history[train])
     plt.plot(train_history.history[validation])
     plt.title('train history')
     plt.xlabel('epoch')
     plt.legend(['train','validation'],loc='upper left')
-    plt.savefig(os.path.join(cwd,'checkpoint','training_history.png'))
+    plt.savefig(os.path.join(cwd,'checkpoint',file_name))
     plt.close(fig)
 
 
@@ -96,11 +96,11 @@ def training():
     model.save_weights(os.path.join(cwd,'checkpoint','trained_weights_final.h5'))
     
         
-    show_train_history(train_history,'acc','val_acc')
-    
+    show_train_history(train_history,'acc','val_acc','train_acc_history.png')
+    show_train_history(train_history,'loss','val_loss','train_loss_history.png')
     
     ### evaluate the last model
-    print('evaluate model performance...')
+    print('evaluate the latest model performance...')
     
     training_preprocess.augment = False
     x_train_normalize,y_train_one_hot = training_preprocess.data_preprocess(img_size)
