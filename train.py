@@ -20,14 +20,14 @@ optimizer = 'adam'
 cwd = os.getcwd()
 
 
-def show_train_history(train_history,train,validation):
+def show_train_history(train_history,train,validation,file_name):
     fig = plt.figure()
     plt.plot(train_history.history[train])
     plt.plot(train_history.history[validation])
     plt.title('train history')
     plt.xlabel('epoch')
     plt.legend(['train','validation'],loc='upper left')
-    plt.savefig(os.path.join(cwd,'checkpoint','training_history.png'))
+    plt.savefig(os.path.join(cwd,'checkpoint',file_name))
     plt.close(fig)
 
 
@@ -68,18 +68,17 @@ def training():
     model.save_weights(os.path.join(cwd,'checkpoint','trained_weights_final_epoch.h5'))
     
     
-    show_train_history(train_history,'acc','val_acc')
-    
+    show_train_history(train_history,'acc','val_acc','train_acc_history.png')
+    show_train_history(train_history,'loss','val_loss','train_loss_history.png')
     
     ### evaluate the last model
-    print('evaluate model performance...')
-    best_model = load_model(filepath)
+    print('evaluate the latest model performance...')
     
     training_preprocess.augment = False
     x_train_normalize,y_train_one_hot = training_preprocess.data_preprocess(img_size)
     y_train = np.argmax(y_train_one_hot,axis = 1)
     
-    train_predict = best_model.predict(x_train_normalize)
+    train_predict = model.predict(x_train_normalize)
     train_predict_class = np.argmax(train_predict,axis=1)
     
     print('total %d training data' %len(y_train))
